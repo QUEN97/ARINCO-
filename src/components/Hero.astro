@@ -1,0 +1,63 @@
+---
+import Navbar from "../components/Navbar.astro";
+import DynamicText from "../components/DinamycText.astro";
+---
+
+<section class="min-h-screen bg-[url('/background-construction.jpg')] bg-cover bg-center relative" x-ref="hero">
+  <!-- Contenido centrado -->
+  <div class="absolute inset-0 flex items-center">
+    <div class="container mx-auto px-4 text-white">
+      <div class="flex flex-col min-h-[70vh] justify-center lg:justify-between lg:flex-row lg:items-center gap-8 py-12">
+        <!-- Texto principal -->
+        <div class="order-1 lg:order-none lg:w-1/2 space-y-6 text-center lg:text-left">
+          <h1 class="text-4xl md:text-5xl font-bold">
+            Construyendo el futuro
+          </h1>
+          <p class="text-lg md:text-xl mb-6">
+            Soluciones integrales en arquitectura, ingeniería y construcción.
+          </p>
+          <div class="flex justify-center lg:justify-start gap-4">
+            <a 
+              href="/contacto" 
+              class="bg-primary hover:bg-primary-dark px-6 py-3 rounded-lg font-medium transition-colors inline-block"
+            >
+              Contactar
+            </a>
+            <a 
+              href="#" 
+              class="bg-white hover:bg-gray-100 text-dark px-6 py-3 rounded-lg font-medium transition-colors inline-block border border-gray-300"
+            >
+              Unete
+            </a>
+          </div>
+        </div>
+
+        <!-- Componente DynamicText -->
+        <div class="order-2 lg:order-none lg:w-1/2 flex justify-center items-center mt-8 lg:mt-0">
+          <DynamicText />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flecha animada para scroll -->
+  <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <svg 
+      width="40" 
+      height="40" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="white" 
+      stroke-width="2" 
+      stroke-linecap="round" 
+      stroke-linejoin="round"
+      class="cursor-pointer"
+      @click="window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' })"
+    >
+      <path d="M12 5v14M19 12l-7 7-7-7"/>
+    </svg>
+  </div>
+  
+  <!-- Navbar sticky -->
+  <Navbar />
+</section>

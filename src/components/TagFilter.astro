@@ -1,0 +1,23 @@
+---
+const { tags = [], activeTag = null } = Astro.props;
+---
+
+<div class="mb-12 bg-white p-6 rounded-xl shadow-sm">
+  <h3 class="text-lg font-semibold text-dark mb-4">Filtrar por etiquetas:</h3>
+  <div class="flex flex-wrap gap-2">
+    <a
+      href="/blog"
+      class={`px-4 py-2 rounded-full font-medium transition-colors ${!activeTag ? 'bg-primary text-white' : 'bg-gray-100 text-dark hover:bg-gray-200'}`}
+    >
+      Todos
+    </a>
+    {tags.map((tag: string) => (
+      <a
+        href={`/blog/tag/${tag}`} 
+        class={`px-4 py-2 rounded-full font-medium transition-colors ${activeTag === tag ? 'bg-primary text-white' : 'bg-gray-100 text-dark hover:bg-gray-200'}`}
+      >
+        {tag}
+      </a>
+    ))}
+  </div>
+</div>

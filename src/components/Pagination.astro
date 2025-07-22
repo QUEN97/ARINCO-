@@ -1,0 +1,42 @@
+---
+const { currentPage = 1, totalPages = 1, basePath = '/blog' } = Astro.props;
+---
+
+<nav class="flex justify-center mt-12">
+  <ul class="flex items-center gap-2">
+    {currentPage > 1 && (
+      <li>
+        <a 
+          href={`${basePath}${currentPage === 2 ? '' : `?page=${currentPage - 1}`}`} 
+          class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"
+          aria-label="Página anterior"
+        >
+          &larr;
+        </a>
+      </li>
+    )}
+
+    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+      <li>
+        <a
+          href={`${basePath}${page === 1 ? '' : `?page=${page}`}`}
+          class={`px-4 py-2 rounded-lg transition-colors ${currentPage === page ? 'bg-primary text-white' : 'border border-gray-300 hover:bg-gray-100'}`}
+        >
+          {page}
+        </a>
+      </li>
+    ))}
+
+    {currentPage < totalPages && (
+      <li>
+        <a 
+          href={`${basePath}?page=${currentPage + 1}`} 
+          class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"
+          aria-label="Página siguiente"
+        >
+          &rarr;
+        </a>
+      </li>
+    )}
+  </ul>
+</nav>

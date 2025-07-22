@@ -1,0 +1,85 @@
+---
+const { blog } = Astro.props;
+
+const getBlogData = () => {
+  if (blog?.data) return { ...blog.data, slug: blog.slug };
+  if (blog?.frontmatter) return { ...blog.frontmatter, slug: blog.params?.slug };
+  return { ...blog };
+};
+
+const { 
+  title = 'Título no disponible',
+  author = 'Autor desconocido',
+  excerpt = '',
+  image,
+  date,
+  tags = [],
+  slug = '#'
+} = getBlogData();
+
+const formattedDate = date ? new Date(date).toLocaleDateString('es-ES') : null;
+---
+
+<article class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col group border border-gray-100">
+  <!-- Imagen con efecto hover -->
+  {image && (
+    <div class="relative overflow-hidden h-60">
+      <img 
+        src={image} 
+        alt={title} 
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+      />
+      <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-all duration-300"></div>
+    </div>
+  )}
+  
+  <!-- Contenido -->
+  <div class="p-6 flex-grow">
+    {/* Metadatos */}
+    {(formattedDate || author) && (
+      <div class="flex items-center text-sm text-gray-500 mb-3">
+        {formattedDate && <span>{formattedDate}</span>}
+        {formattedDate && author && <span class="mx-2">•</span>}
+        {author && <span>{author}</span>}
+      </div>
+    )}
+    
+    {/* Título con efecto hover */}
+    <h3 class="text-xl font-bold text-dark mb-3 group-hover:text-primary transition-colors">
+      {title}
+    </h3>
+    
+    {/* Extracto */}
+    {excerpt && <p class="text-gray-600 mb-4">{excerpt}</p>}
+    
+    {/* Etiquetas (mostrar máximo 2) */}
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mt-4">
+        {tags.slice(0, 2).map((tag: string) => (
+          <span class="px-2 py-1 bg-gray-100 text-dark text-xs rounded-full">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+  
+  {/* Enlace "Leer más" */}
+  <div class="px-6 pb-6">
+    <a 
+      href={`/blog/${slug}`} 
+      class="inline-flex items-center text-primary font-medium hover:text-primary-dark transition-colors"
+    >
+      Leer más
+      <svg 
+        class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" 
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </a>
+  </div>
+</article>

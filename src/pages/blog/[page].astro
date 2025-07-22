@@ -1,0 +1,49 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import Pagination from '../../components/Pagination.astro';
+import { getCollection } from 'astro:content';
+
+// Definir postsPerPage dentro de getStaticPaths
+export async function getStaticPaths() {
+  const postsPerPage = 6; // Mover aquí la constante
+  const allPosts = await getCollection('blog');
+  const totalPages = Math.ceil(allPosts.length / postsPerPage);
+  
+  return Array.from({ length: totalPages }, (_, i) => ({
+    params: { page: (i + 1).toString() },
+    props: {
+      allPosts,
+      postsPerPage // Pasamos la constante como prop
+    }
+  }));
+}
+
+// Recibir props
+const { allPosts, postsPerPage } = Astro.props;
+const { page } = Astro.params;
+const currentPage = parseInt(page) || 1;
+const startIndex = (currentPage - 1) * postsPerPage;
+const posts = allPosts
+  .sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(startIndex, startIndex + postsPerPage);
+---
+
+<Layout>
+  <section class="py-12">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold mb-8">Blog - Página {currentPage}</h1>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {posts.map((post: any) => (
+          <BlogCard post={post} />
+        ))}
+      </div>
+
+      <Pagination 
+        currentPage={currentPage} 
+        totalPages={Math.ceil(allPosts.length / postsPerPage)} 
+      />
+    </div>
+  </section>
+</Layout>

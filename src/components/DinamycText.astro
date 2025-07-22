@@ -1,0 +1,39 @@
+<div class="flex items-center justify-center w-full">
+  <div class="w-full max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
+    <!-- Logo ARINCO -->
+    <div class="text-white lg:text-transparent text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-extrabold flex justify-between tracking-wider lg:[text-shadow:_-1px_-1px_0_white,1px_-1px_0_white,-1px_1px_0_white,1px_1px_0_white]">
+      <span class="transform hover:scale-110 transition-transform lg:bg-clip-text lg:bg-black">A</span>
+      <span class="transform hover:scale-110 transition-transform lg:bg-clip-text lg:bg-black">R</span>
+      <span class="transform hover:scale-110 transition-transform lg:bg-clip-text lg:bg-black">I</span>
+      <span class="transform hover:scale-110 transition-transform lg:bg-clip-text lg:bg-black">N</span>
+      <span class="transform hover:scale-110 transition-transform lg:bg-clip-text lg:bg-black">C</span>
+      <span class="transform hover:scale-110 transition-transform lg:bg-clip-text lg:bg-black">O</span>
+    </div>
+
+    <!-- Texto rotativo -->
+    <div class="bg-primary rounded-md font-bold text-white text-xl sm:text-2xl md:text-3xl p-3 mt-2">
+      <div
+        x-data="{ 
+          texts: ['ARQUITECTURA', 'INGENIERÍA', 'CONSTRUCCIÓN'], 
+          currentIndex: 0,
+          key: 0,
+          next() {
+            this.currentIndex = (this.currentIndex + 1) % this.texts.length;
+            this.key++;
+          }
+        }"
+        x-init="setInterval(() => next(), 3000)"
+        class="overflow-hidden flex justify-center"
+      >
+        <template x-for="(letter, index) in texts[currentIndex].split('')" :key="key + '-' + index">
+          <span
+            x-text="letter"
+            class="inline-block opacity-0 transform -translate-y-8 animate-drop"
+            :style="'animation-delay: ' + (index * 0.1) + 's'"
+          ></span>
+        </template>
+      </div>
+    </div>
+  </div>
+</div>
+

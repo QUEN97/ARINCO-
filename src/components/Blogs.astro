@@ -1,0 +1,55 @@
+---
+import BlogCard from "../components/BlogCard.astro";
+import { getCollection } from "astro:content";
+
+const recentPosts = (await getCollection("blog"))
+  .sort((a: any, b: any) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3)
+  .map((post: any) => ({
+    ...post,
+    ...post.data,
+    slug: post.slug,
+  }));
+---
+
+<section id="blogs" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <!-- Encabezado -->
+      <div class="text-center mb-12">
+        <span class="text-primary font-semibold tracking-widest uppercase"
+          >Actualidad</span
+        >
+        <h2 class="text-4xl font-bold text-dark mt-4 mb-6">
+          Últimos Artículos
+        </h2>
+        <div class="w-20 h-1 bg-primary mx-auto"></div>
+      </div>
+
+      <!-- Grid de artículos -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {recentPosts.map((post: any) => <BlogCard blog={post} />)}
+      </div>
+
+      <!-- Botón CTA -->
+      <div class="text-center mt-12">
+        <a
+          href="/blog"
+          class="inline-flex items-center bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg"
+        >
+          Ver todos los artículos
+          <svg
+            class="w-5 h-5 ml-2 transition-transform hover:translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>

@@ -1,0 +1,118 @@
+---
+const servicios = [
+  {
+    id: 'arquitectura',
+    titulo: 'Arquitectura',
+    icono: 'drafting-compass',
+    color: 'primary',
+    descripcion: 'Diseños innovadores y funcionales para todo tipo de proyectos, desde viviendas unifamiliares hasta complejos urbanísticos.',
+    detalles: [
+      'Diseño arquitectónico personalizado',
+      'Planos ejecutivos y constructivos',
+      'Renderizados 3D fotorrealistas',
+      'Gestión de permisos municipales',
+      'Asesoría en diseño sustentable'
+    ]
+  },
+  {
+    id: 'ingenieria',
+    titulo: 'Ingeniería',
+    icono: 'ruler-combined',
+    color: 'accent',
+    descripcion: 'Cálculos estructurales precisos y soluciones técnicas avanzadas que garantizan la seguridad y durabilidad de tus proyectos.',
+    detalles: [
+      'Cálculo estructural especializado',
+      'Análisis de suelos y cimentaciones',
+      'Diseño de instalaciones (eléctricas, sanitarias)',
+      'Supervisión técnica de obra',
+      'Dictámenes y peritajes'
+    ]
+  },
+  {
+    id: 'construccion',
+    titulo: 'Construcción',
+    icono: 'hard-hat',
+    color: 'secondary',
+    descripcion: 'Gestión y ejecución de obras con los más altos estándares de calidad, cumpliendo plazos y presupuestos acordados.',
+    detalles: [
+      'Construcción desde cero',
+      'Remodelación y ampliaciones',
+      'Pintura e impermeabilización',
+      'Mantenimiento en general',
+      'Supervisión y control de calidad'
+    ]
+  }
+];
+---
+
+<section id="servicios" class="py-20 bg-gray-100">
+  <div class="container mx-auto px-4">
+    <!-- Encabezado -->
+    <div class="text-center mb-16">
+      <span class="text-primary font-semibold tracking-widest uppercase">Lo que ofrecemos</span>
+      <h2 class="text-4xl font-bold text-dark mt-4 mb-6">Nuestros Servicios</h2>
+      <div class="w-20 h-1 bg-primary mx-auto"></div>
+    </div>
+
+    <!-- Tarjetas de servicios con altura independiente -->
+    <div class="grid md:grid-cols-3 gap-8 items-start">
+      {servicios.map((servicio) => (
+        <div 
+          class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-${servicio.color} group"
+          x-data="{ mostrarDetalles: false }"
+        >
+          <!-- Contenido de la tarjeta -->
+          <div class="flex flex-col h-full">
+            <!-- Icono y título -->
+            <div class="flex items-center mb-6">
+              <div class={`w-14 h-14 bg-${servicio.color}/10 rounded-full flex items-center justify-center mr-4`}>
+                <i class={`fas fa-${servicio.icono} text-${servicio.color} text-2xl`}></i>
+              </div>
+              <h3 class="text-2xl font-bold text-dark">{servicio.titulo}</h3>
+            </div>
+
+            <!-- Contenido dinámico -->
+            <div class="flex-grow">
+              <div x-show="!mostrarDetalles" x-transition class="h-full">
+                <p class="text-gray-600 mb-4">{servicio.descripcion}</p>
+              </div>
+              
+              <div x-show="mostrarDetalles" x-transition class="h-full">
+                <p class="text-gray-600 font-medium mb-3">Tus sueños hechos realidad:</p>
+                <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                  {servicio.detalles.map((detalle) => (
+                    <li>{detalle}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <!-- Botón Saber más/Ver menos -->
+            <div class="mt-6">
+              <button
+                @click="mostrarDetalles = !mostrarDetalles"
+                class={`text-${servicio.color} font-medium inline-flex items-center hover:text-${servicio.color}-dark transition-colors`}
+              >
+                <span x-text="mostrarDetalles ? 'Ver menos' : 'Saber más'"></span>
+                <i 
+                  class="fas fa-arrow-right ml-2 transition-transform"
+                  :class="{ 'rotate-90': mostrarDetalles }"
+                ></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <!-- <div class="text-center mt-16">
+      <a
+        href="/servicios"
+        class="inline-block bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg"
+      >
+        Ver todos nuestros servicios
+      </a>
+    </div> -->
+  </div>
+</section>

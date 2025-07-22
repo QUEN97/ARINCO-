@@ -1,0 +1,176 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import SwiperGallery from "../../components/SwiperGallery.astro";
+
+export async function getStaticPaths() {
+  const proyectos = await getCollection("proyectos");
+  return proyectos.map((proyecto: any) => ({
+    params: { slug: proyecto.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const proyectoEntry = await getCollection("proyectos").then((entries: any) =>
+  entries.find((p: any) => p.slug === slug),
+);
+
+if (!proyectoEntry) {
+  return Astro.redirect("/404");
+}
+
+const proyecto = {
+  ...proyectoEntry,
+  // Procesar las imágenes (si están como string separado por comas)
+  data: {
+    ...proyectoEntry.data,
+    images:
+      typeof proyectoEntry.data.images === "string"
+        ? proyectoEntry.data.images.split(",").map((img: any) => img.trim())
+        : proyectoEntry.data.images || [],
+  },
+};
+
+const { Content } = await proyectoEntry.render();
+---
+
+<Layout>
+  <!-- Hero del proyecto -->
+  <div class="relative w-full h-[70vh] min-h-[500px] bg-dark overflow-hidden">
+    <!-- Imagen de fondo con overlay -->
+    <img
+      src={proyecto.data.image}
+      alt={proyecto.data.title}
+      class="absolute inset-0 w-full h-full object-cover opacity-90"
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/30 to-transparent"
+    >
+    </div>
+
+    <!-- Contenido del hero -->
+    <div
+      class="container mx-auto px-4 h-full flex flex-col justify-end pb-16 relative z-10"
+    >
+      <div class="max-w-4xl">
+        <span
+          class="text-primary font-semibold tracking-widest uppercase mb-2 inline-block"
+          >Proyecto Destacado</span
+        >
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+          {proyecto.data.title}
+        </h1>
+
+        <!-- Metadatos -->
+        <div class="flex flex-wrap gap-4 text-white">
+          {
+            proyecto.data.year && (
+              <span class="inline-flex items-center">
+                <i class="far fa-calendar-alt mr-2 text-primary" />
+                {proyecto.data.year}
+              </span>
+            )
+          }
+          {
+            proyecto.data.location && (
+              <span class="inline-flex items-center">
+                <i class="fas fa-map-marker-alt mr-2 text-primary" />
+                {proyecto.data.location}
+              </span>
+            )
+          }
+          {
+            proyecto.data.client && (
+              <span class="inline-flex items-center">
+                <i class="fas fa-building mr-2 text-primary" />
+                {proyecto.data.client}
+              </span>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <main class="w-full">
+    <!-- Sección de contenido -->
+    <section class="container mx-auto px-4 py-16 max-w-5xl">
+      <div class="prose prose-lg max-w-none">
+        <Content />
+      </div>
+    </section>
+
+    <!-- Galería de imágenes (opcional) -->
+    <section class="w-full bg-gray-50 py-12">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-dark mb-8">Galería del Proyecto</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Imagen principal */}
+          {
+            proyecto.data.image && (
+              <img
+                src={proyecto.data.image}
+                alt={`${proyecto.data.title} - Vista principal`}
+                class="w-full h-64 object-cover rounded-lg shadow-md"
+                loading="lazy"
+              />
+            )
+          }
+
+          {/* Galería de imágenes adicionales */}
+          {
+            proyecto.data.images &&
+              proyecto.data.images.length > 0 &&
+              proyecto.data.images.map((img: any, index: number) => (
+                <img
+                  
+                  src={img}
+                  alt={`${proyecto.data.title} - Vista ${index + 1}`}
+                  class="w-full h-64 object-cover rounded-lg shadow-md"
+                  loading="lazy"
+                />
+              ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Tags y navegación -->
+    <section class="container mx-auto px-4 py-12 max-w-5xl">
+      {
+        proyecto.data.tags && proyecto.data.tags.length > 0 && (
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold text-dark mb-4">Etiquetas</h3>
+            <div class="flex flex-wrap gap-2">
+              {proyecto.data.tags.map((tag: any) => (
+                <span class="bg-gray-100 text-dark px-4 py-2 rounded-full text-sm font-medium">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      <div
+        class="flex flex-col sm:flex-row justify-between gap-4 border-t border-gray-200 pt-8"
+      >
+        <a
+          href="/proyectos"
+          class="inline-flex items-center text-primary font-medium hover:text-primary-dark transition-colors"
+        >
+          <i class="fas fa-arrow-left mr-2"></i>
+          Volver a todos los proyectos
+        </a>
+        <a
+          href="/contacto"
+          class="inline-flex items-center bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition-colors"
+        >
+          ¿Interesado en un proyecto similar?
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </section>
+  </main>
+</Layout>

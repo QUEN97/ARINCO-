@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Transiciones suaves para tarjetas */
+.blog-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para etiquetas */
+.tag {
+  transition: background-color 0.2s ease;
+}
+
+/* Paginación activa */
+.pagination-active {
+  background-color: #2563eb;
+  color: white;
+}
+
+ .prose {
+    line-height: 1.7;
+    color: #374151;
+    font-size: 1.125rem;
+  }
+  .prose h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    color: #111827;
+  }
+  .prose h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
+    color: #111827;
+  }
+  .prose p {
+    margin-bottom: 1.5rem;
+  }
+  .prose img {
+    border-radius: 0.75rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  .prose ul, .prose ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.75rem;
+  }
+  .prose ul {
+    list-style-type: disc;
+  }
+  .prose ol {
+    list-style-type: decimal;
+  }
+  .prose a {
+    color: #F59E0B;
+    font-weight: 500;
+  }
+  .prose a:hover {
+    text-decoration: underline;
+  }
+
+   @keyframes drop {
+        0% {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        50% {
+            opacity: 1;
+            transform: translateY(5px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-drop {
+        animation: drop 0.8s ease-out forwards;
+    }
